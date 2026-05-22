@@ -1,7 +1,7 @@
 """Smart Emergency Chain — dispatches alerts to response agencies by category."""
 from datetime import datetime
 
-AGENCIES = {
+AGENCIES = {       
     "hospital": [
         {"name": "City General Hospital", "phone": "108", "unit": "Ambulance & Trauma"},
         {"name": "District Medical Center", "phone": "+91-80-2222-3333", "unit": "Emergency Ward"},
