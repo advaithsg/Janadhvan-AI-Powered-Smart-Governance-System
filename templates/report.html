@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ t('report.title') }}{% endblock %}
+{% block content %}
+<div class="form-page card">
+<h2 class="section-title">{{ t('report.title') }}</h2>
+
+{% if duplicate_id or image_duplicate_id %}
+<div class="alert alert-warning">
+    {% if duplicate_id %}Similar text complaint #{{ duplicate_id }}.{% endif %}
+    {% if image_duplicate_id %} {{ t('report.image_dup') }} #{{ image_duplicate_id }}.{% endif %}
+</div>
+{% endif %}
+
+<div class="voice-panel">
+    <h4>{{ t('report.voice') }}</h4>
+    <p class="hint">{{ t('report.voice_hint') }}</p>
+    <button type="button" id="btn-voice-start" class="btn btn-secondary btn-sm">{{ t('report.voice_start') }}</button>
+    <button type="button" id="btn-voice-stop" class="btn btn-outline btn-sm" disabled>{{ t('report.voice_stop') }}</button>
+    <span id="voice-status" class="gps-status"></span>
+</div>
+
+<div id="image-dup-alert" class="alert alert-warning" style="display:none;"></div>
+
+<form method="POST" enctype="multipart/form-data" id="report-form">
+<div class="form-group"><label>{{ t('common.title') }} *</label><input id="complaint-title" name="title" required></div>
+<div class="form-group"><label>{{ t('common.description') }} *</label><textarea id="complaint-description" name="description" required></textarea></div>
+<div id="auto-cat-hint" class="auto-cat-hint"></div>
+<div class="form-group"><label>{{ t('common.category') }} *</label>
+<select id="complaint-category" name="category" required>
+<option value="">Select</option><option>Road Damage</option><option>Garbage</option>
+<option>Water Leakage</option><option>Drainage</option><option>Streetlight Issues</option>
+</select></div>
+<div class="form-group"><label>{{ t('common.area') }} *</label><input name="area" required></div>
+<div class="gps-box"><label>{{ t('gps.required') }}</label>
+<button type="button" id="btn-detect-location" class="btn btn-secondary btn-sm">{{ t('gps.detect') }}</button>
+<p id="gps-status" class="gps-status"></p><p id="gps-coords" class="gps-coords"></p>
+<input type="hidden" id="latitude" name="latitude"><input type="hidden" id="longitude" name="longitude">
+<input type="text" id="gps_address" name="gps_address" readonly placeholder="Address"></div>
+<div class="form-group"><label>Priority</label><select name="priority"><option>Low</option><option selected>Medium</option><option>High</option></select></div>
+<div class="form-group">
+    <label>{{ t('common.image') }} <span class="ai-badge">AI Duplicate Check</span></label>
+    <input type="file" id="complaint-image" name="image" accept="image/*">
+    <img id="image-preview" class="image-preview" alt="">
+    <p class="hint">Perceptual AI compares your photo against existing complaint images.</p>
+</div>
+<input type="hidden" name="force_new" value="1" id="force-new-input">
+<button type="submit" class="btn btn-primary" style="width:100%">{{ t('report.submit') }}</button>
+</form></div>
+{% endblock %}

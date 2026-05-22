@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<h2 class="section-title">My Complaint History</h2>
+<div class="toolbar"><input id="history-search" placeholder="Search..."></div>
+<div class="card table-wrap"><table id="history-table">
+<thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Area</th><th>Priority</th><th>Status</th><th>Date</th><th>Follow</th></tr></thead>
+<tbody>
+{% for c in complaints %}
+<tr><td>#{{ c.id }}</td><td>{{ c.title }}</td><td>{{ c.category }}</td><td>{{ c.area }}</td>
+<td>{{ c.priority }}</td><td>{{ c.status }}</td><td>{{ c.created_at[:10] }}</td>
+<td>{% if c.id in followed_ids %}
+<form method="POST" action="{{ url_for('unfollow_complaint', cid=c.id) }}"><button class="btn btn-sm btn-outline">Unfollow</button></form>
+{% else %}
+<form method="POST" action="{{ url_for('follow_complaint', cid=c.id) }}"><button class="btn btn-sm btn-primary">Follow</button></form>
+{% endif %}</td></tr>
+{% else %}<tr><td colspan="8">No complaints. <a href="{{ url_for('report') }}">Report</a></td></tr>
+{% endfor %}
+</tbody></table></div>
+{% endblock %}

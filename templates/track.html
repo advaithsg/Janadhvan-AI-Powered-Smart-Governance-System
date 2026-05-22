@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Track{% endblock %}
+{% block content %}
+<div class="card" style="max-width:640px;margin:0 auto 1.5rem;">
+<h2 class="section-title">Track Complaint</h2>
+<form method="POST"><input name="complaint_id" placeholder="Complaint ID" required>
+<button class="btn btn-primary">Track</button></form></div>
+{% if complaint %}
+<div class="card">
+<h3>#{{ complaint.id }} — {{ complaint.title }}</h3>
+<p>Category: {{ complaint.category }} | Area: {{ complaint.area }}</p>
+<p>Priority: {{ complaint.priority }} | Status: {{ complaint.status }}</p>
+<p>{{ complaint.validation_count }} Citizens Affected</p>
+{% if complaint.gps_address %}<p>Location: {{ complaint.gps_address }}</p>{% endif %}
+{% if complaint.image %}<img src="{{ url_for('static', filename='uploads/' + complaint.image) }}" style="max-width:100%;border-radius:8px">{% endif %}
+{% if session.user_id %}
+<form method="POST" action="{{ url_for('validate', cid=complaint.id) }}"><button class="btn btn-outline">Validate Issue</button></form>
+<form method="POST" action="{{ url_for('follow_complaint', cid=complaint.id) }}"><button class="btn btn-secondary">Follow Complaint</button></form>
+{% endif %}</div>
+
+{% if complaint.is_emergency and emergency_chain %}
+<div class="card emergency-chain-card">
+<h3>{{ t('emergency.chain_title') }}</h3>
+<div class="chain-grid">
+{% for d in emergency_chain %}
+<div class="chain-agency chain-{{ d.agency_type }}">
+<span class="chain-type-badge">{% if d.agency_type == 'hospital' %}{{ t('chain.hospital') }}{% elif d.agency_type == 'fire' %}{{ t('chain.fire') }}{% else %}{{ t('chain.disaster') }}{% endif %}</span>
+<h4>{{ d.agency_name }}</h4><p>{{ d.unit }} | {{ d.contact_phone }}</p>
+<span class="badge badge-resolved">{{ t('chain.status_sent') }}</span>
+</div>
+{% endfor %}
+</div>
+</div>
+{% endif %}
+
+{% endif %}
+{% endblock %}

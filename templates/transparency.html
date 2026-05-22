@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Transparency{% endblock %}
+{% block content %}
+<h2 class="section-title">Public Transparency Board</h2>
+<p>Open governance data — no private citizen information exposed.</p>
+<div class="stats-grid">
+<div class="stat-card"><h3>{{ stats.total }}</h3><p>Total Processed</p></div>
+<div class="stat-card"><h3>{{ stats.resolved }}</h3><p>Resolved Publicly</p></div>
+</div>
+<h3>Department Performance</h3>
+<table><thead><tr><th>Department</th><th>Efficiency</th><th>Resolved</th></tr></thead>
+<tbody>{% for d in dept %}<tr><td>{{ d.name }}</td><td>{{ d.efficiency }}%</td><td>{{ d.resolved }}</td></tr>{% endfor %}</tbody></table>
+<h3>Recently Resolved (Public)</h3>
+<table><thead><tr><th>ID</th><th>Title</th><th>Category</th><th>Area</th><th>Days to Resolve</th></tr></thead>
+<tbody>{% for r in resolved %}<tr><td>#{{ r.id }}</td><td>{{ r.title }}</td><td>{{ r.category }}</td><td>{{ r.area }}</td><td>{{ r.days_open }}</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

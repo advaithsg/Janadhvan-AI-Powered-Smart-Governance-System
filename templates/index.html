@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>{{ t('hero.title') }}</h1>
+    <p>{{ t('hero.subtitle') }}</p>
+    <div class="hero-actions">
+        <a href="{{ url_for('report') }}" class="btn btn-primary">{{ t('hero.report') }}</a>
+        <a href="{{ url_for('emergency') }}" class="btn btn-danger">{{ t('hero.emergency') }}</a>
+        <a href="{{ url_for('track') }}" class="btn btn-secondary">{{ t('hero.track') }}</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <div class="stat-card">
+        <h3 data-count="{{ stats.total }}">0</h3>
+        <p>Total Complaints</p>
+    </div>
+    <div class="stat-card">
+        <h3 data-count="{{ stats.resolved }}">0</h3>
+        <p>Resolved Issues</p>
+    </div>
+    <div class="stat-card">
+        <h3 data-count="{{ stats.active }}">0</h3>
+        <p>Active Complaints</p>
+    </div>
+    <div class="stat-card">
+        <h3 data-count="{{ stats.emergency }}">0</h3>
+        <p>Emergency Cases</p>
+    </div>
+</section>
+
+<section class="card">
+    <h2 class="section-title">About Janadhvani </h2>
+    <div class="about-grid">
+        <div class="about-item">
+            <h4>Civic Problems</h4>
+            <p>Report potholes, garbage, drainage, water leaks, and streetlight failures in your locality.</p>
+        </div>
+        <div class="about-item">
+            <h4>Governance Challenges</h4>
+            <p>Bridge the gap between citizens and authorities with structured digital complaint workflows.</p>
+        </div>
+        <div class="about-item">
+            <h4>Digital Transparency</h4>
+            <p>Track status, validate community issues, and view public transparency metrics.</p>
+        </div>
+        <div class="about-item">
+            <h4>Smart Administration</h4>
+            <p>Hotspot detection, auto-escalation, GPS location, and intelligent priority systems.</p>
+        </div>
+        <div class="about-item">
+            <h4>Voice Complaints</h4>
+            <p>Report issues by speaking — voice fills your complaint in your preferred language.</p>
+        </div>
+        <div class="about-item">
+            <h4>AI Duplicate Image Detection</h4>
+            <p>Perceptual AI blocks recycled photos to reduce fake duplicate reports.</p>
+        </div>
+        <div class="about-item">
+            <h4>Multi-Language Governance</h4>
+            <p>English, Hindi, Kannada, and Tamil across navigation and civic workflows.</p>
+        </div>
+        <div class="about-item">
+            <h4>Smart Emergency Chain</h4>
+            <p>Critical emergencies auto-alert hospitals, fire services, and disaster response teams.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+

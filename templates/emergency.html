@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{ t('emergency.title') }}{% endblock %}
+{% block content %}
+<div class="form-page card emergency-form-card">
+    <h2 class="section-title">{{ t('emergency.title') }}</h2>
+    
+    <div class="alert alert-danger">
+        <strong>{{ t('emergency.chain_title') }}</strong><br>
+        {{ t('emergency.chain_desc') }}
+    </div>
+
+    <div class="voice-panel voice-panel-emergency">
+        <h4>{{ t('report.voice') }}</h4>
+        <p class="hint">{{ t('report.voice_hint') }}</p>
+        <button type="button" id="btn-voice-start" class="btn btn-danger btn-sm">{{ t('report.voice_start') }}</button>
+        <button type="button" id="btn-voice-stop" class="btn btn-outline btn-sm" disabled>{{ t('report.voice_stop') }}</button>
+        <span id="voice-status" class="gps-status"></span>
+    </div>
+
+    <div id="image-dup-alert" class="alert alert-warning" style="display:none;"></div>
+
+    <form method="POST" enctype="multipart/form-data" id="emergency-form">
+        <div class="form-group"><label>{{ t('common.title') }} *</label><input id="complaint-title" name="title" required></div>
+        <div class="form-group"><label>{{ t('common.description') }} *</label><textarea id="complaint-description" name="description" required></textarea></div>
+        <div class="form-group"><label>{{ t('common.category') }} *</label>
+        <select name="category" id="emergency-category" required>
+            <option>Fire Emergency</option><option>Medical Emergency</option><option>Flood</option>
+            <option>Gas Leakage</option><option>Accident</option>
+        </select></div>
+        <div class="form-group"><label>{{ t('common.area') }} *</label><input type="text" name="area" required></div>
+        <div class="gps-box">
+            <label>{{ t('gps.required') }}</label>
+            <button type="button" id="btn-detect-location" class="btn btn-danger btn-sm">{{ t('gps.detect') }}</button>
+            <p id="gps-status" class="gps-status"></p>
+            <p id="gps-coords" class="gps-coords"></p>
+            <input type="hidden" id="latitude" name="latitude">
+            <input type="hidden" id="longitude" name="longitude">
+            <input type="text" id="gps_address" name="gps_address" readonly placeholder="Address">
+        </div>
+        <div class="form-group">
+            <label>{{ t('common.image') }} <span class="ai-badge">AI Duplicate Check</span></label>
+            <input type="file" id="complaint-image" name="image" accept="image/*">
+            <img id="image-preview" class="image-preview" alt="">
+        </div>
+        <button type="submit" class="btn btn-danger" style="width:100%">{{ t('emergency.submit') }}</button>
+    </form>
+</div>
+{% endblock %}

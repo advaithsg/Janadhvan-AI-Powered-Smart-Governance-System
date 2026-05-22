@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ t('emergency.title') }}{% endblock %}
+{% block content %}
+<div class="card emergency-chain-card">
+    <h2 class="section-title" style="color:var(--danger);">{{ t('emergency.dispatched') }}</h2>
+    <p><strong>Reference ID:</strong> #{{ complaint_id }} | <strong>{{ t('common.category') }}:</strong> {{ category }}</p>
+    <p class="hint">{{ t('emergency.chain_desc') }}</p>
+</div>
+
+<div class="card">
+    <h3>{{ t('emergency.chain_title') }}</h3>
+    <div class="chain-grid">
+        {% for d in chain %}
+        <div class="chain-agency chain-{{ d.agency_type }}">
+            <span class="chain-type-badge">
+                {% if d.agency_type == 'hospital' %}{{ t('chain.hospital') }}
+                {% elif d.agency_type == 'fire' %}{{ t('chain.fire') }}
+                {% else %}{{ t('chain.disaster') }}{% endif %}
+            </span>
+            <h4>{{ d.agency_name }}</h4>
+            <p>{{ d.unit }}</p>
+            <p><strong>{{ d.contact_phone }}</strong></p>
+            <span class="badge badge-resolved">{{ t('chain.status_sent') }}</span>
+            <p class="chain-time">{{ d.dispatched_at[:19] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="hero-actions" style="margin-top:1.5rem;">
+    <a href="{{ url_for('track') }}" class="btn btn-primary">{{ t('nav.track') }}</a>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">{{ t('nav.home') }}</a>
+</div>
+{% endblock %}

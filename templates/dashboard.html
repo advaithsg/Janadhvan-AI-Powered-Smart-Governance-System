@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="section-title">Admin Dashboard</h2>
+<div class="stats-grid">
+<div class="stat-card"><h3>{{ stats.total }}</h3><p>Total</p></div>
+<div class="stat-card"><h3>{{ stats.active }}</h3><p>Active</p></div>
+<div class="stat-card"><h3>{{ stats.resolved }}</h3><p>Resolved</p></div>
+<div class="stat-card"><h3>{{ stats.emergency }}</h3><p>Emergency</p></div>
+</div>
+<form class="toolbar" method="GET">
+<input name="q" value="{{ request.args.get('q','') }}" placeholder="Search">
+<select name="status"><option value="">All</option><option>Pending</option><option>In Progress</option><option>Resolved</option></select>
+<button class="btn btn-primary btn-sm">Filter</button></form>
+<div class="card table-wrap"><table><thead>
+<tr><th>ID</th><th>User</th><th>Title</th><th>Area</th><th>Category</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for c in complaints %}
+<tr class="{% if c.is_emergency %}row-emergency{% endif %}">
+<td>#{{ c.id }}{% if c.is_emergency %} <span class="badge badge-emergency">EMERGENCY</span>{% endif %}</td>
+<td>{{ c.full_name }}</td><td>{{ c.title }}</td><td>{{ c.area }}</td><td>{{ c.category }}</td>
+<td>{{ c.priority }}</td><td>{{ c.status }}</td>
+<td><form method="POST" action="{{ url_for('update_complaint', cid=c.id) }}" style="display:flex;gap:4px;">
+<select name="status"><option>Pending</option><option {% if c.status=='In Progress' %}selected{% endif %}>In Progress</option><option {% if c.status=='Resolved' %}selected{% endif %}>Resolved</option></select>
+<button class="btn btn-sm btn-primary">Update</button></form>
+<form method="POST" action="{{ url_for('delete_complaint', cid=c.id) }}"><button class="btn btn-sm btn-danger">Delete</button></form></td>
+</tr>{% endfor %}</tbody></table></div>
+<h3>Civic Hotspots</h3><table>{% for h in hotspots %}<tr><td>{{ h.area }}</td><td>{{ h.count }}</td></tr>{% endfor %}</table>
+
+<h3 class="section-title">{{ t('dashboard.chain') }}</h3>
+<div class="card table-wrap">
+<table><thead><tr><th>ID</th><th>Agency</th><th>Type</th><th>Contact</th><th>Status</th><th>Time</th></tr></thead>
+<tbody>
+{% for e in emergency_chain_log %}
+<tr><td>#{{ e.complaint_id }}</td><td>{{ e.agency_name }}</td><td>{{ e.agency_type }}</td>
+<td>{{ e.contact_phone }}</td><td>{{ e.status }}</td><td>{{ e.dispatched_at[:16] }}</td></tr>
+{% else %}<tr><td colspan="6">No emergency dispatches yet.</td></tr>
+{% endfor %}
+</tbody></table>
+</div>
+{% endblock %}

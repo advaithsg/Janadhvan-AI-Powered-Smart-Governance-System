@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Feedback{% endblock %}
+{% block content %}
+<div class="form-page card">
+<h2 class="section-title">Citizen Feedback</h2>
+<form method="POST">
+<div class="form-group"><label>Resolved Complaint</label>
+<select name="complaint_id" required><option value="">Select</option>
+{% for c in resolved_complaints %}<option value="{{ c.id }}">#{{ c.id }} - {{ c.title }}</option>{% endfor %}
+</select></div>
+<div class="form-group"><label>Rating</label>
+<div class="star-rating">
+<input type="radio" name="rating" value="5" id="s5"><label for="s5">&#9733;</label>
+<input type="radio" name="rating" value="4" id="s4"><label for="s4">&#9733;</label>
+<input type="radio" name="rating" value="3" id="s3"><label for="s3">&#9733;</label>
+<input type="radio" name="rating" value="2" id="s2"><label for="s2">&#9733;</label>
+<input type="radio" name="rating" value="1" id="s1" required><label for="s1">&#9733;</label>
+</div> </div>
+<div class="form-group"><label>Feedback</label><textarea name="feedback"></textarea></div>
+<button class="btn btn-primary" style="width:100%">Submit Feedback</button>
+</form></div>
+{% endblock %}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Janadhvani {% endblock %} | Smart Governance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <span class="nav-brand-icon">J</span>
+                <span>Janadhvani </span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">{{ t('nav.home') }}</a></li>
+                <li><a href="{{ url_for('report') }}">{{ t('nav.report') }}</a></li>
+                <li><a href="{{ url_for('emergency') }}">{{ t('nav.emergency') }}</a></li>
+                <li><a href="{{ url_for('track') }}">{{ t('nav.track') }}</a></li>
+                {% if session.get('user_id') %}
+                <li><a href="{{ url_for('history') }}">{{ t('nav.history') }}</a></li>
+                <li><a href="{{ url_for('feedback') }}">{{ t('nav.feedback') }}</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('transparency') }}">{{ t('nav.transparency') }}</a></li>
+                {% if session.get('role') == 'admin' %}
+                <li><a href="{{ url_for('dashboard') }}">{{ t('nav.dashboard') }}</a></li>
+                <li><a href="{{ url_for('analytics') }}">{{ t('nav.analytics') }}</a></li>
+                {% endif %}
+            </ul>
+
+            <div class="nav-actions">
+                <select class="lang-select" id="lang-select" aria-label="{{ t('nav.language') }}">
+                    {% for code, label in supported_langs.items() %}
+                    <option value="{{ code }}" {% if current_lang == code %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                {% if session.get('user_id') and unread_notifications %}
+                <div style="position:relative">
+                    <a href="#" class="nav-notif" id="notif-bell" aria-label="Notifications">&#128276;
+                        <span class="notif-badge">{{ unread_notifications|length }}</span>
+                    </a>
+                    <div id="notif-dropdown" class="notif-dropdown">
+                        {% for n in unread_notifications %}
+                        <div class="notif-item">
+                            {{ n.message }}
+                            <br><a href="{{ url_for('mark_notification_read', nid=n.id) }}">Mark read</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if session.get('user_id') %}
+                <span class="nav-user">{{ session.full_name }}</span>
+                <a href="{{ url_for('logout') }}" class="btn-nav btn-nav-outline">{{ t('nav.logout') }}</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn-nav btn-nav-outline">{{ t('nav.login') }}</a>
+                <a href="{{ url_for('signup') }}" class="btn-nav btn-nav-primary">{{ t('nav.signup') }}</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div>
+                <h4>Janadhvani </h4>
+                <p>Smart digital governance for transparent civic management and emergency response.</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('report') }}">{{ t('nav.report') }}</a></li>
+                    <li><a href="{{ url_for('emergency') }}">Emergency</a></li>
+                    <li><a href="{{ url_for('track') }}">Track Status</a></li>
+                    <li><a href="{{ url_for('transparency') }}">Transparency Board</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul>
+                    <li>Email: support@janadhvani.gov.in</li>
+                    <li>Helpline: 1800-XXX-XXXX</li>
+                    <li>Hours: Mon–Sat 9AM–6PM</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Janadhvani . All rights reserved. | Smart Governance Platform
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+
